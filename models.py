@@ -1,9 +1,20 @@
+import os
 from pymongo import MongoClient
 from bson import ObjectId
 from datetime import datetime
 
+mongodb_user = os.environ.get('MONGODB_USER')
+mongodb_password = os.environ.get('MONGODB_PASSWORD')
+mongodb_host = os.environ.get('MONGODB_HOST')
+mongo_dsn = f'mongodb+srv://{mongodb_user}:{mongodb_password}@{mongodb_host}/?retryWrites=true&w=majority'
+development = os.environ.get('DEVELOPMENT') or True
 
-client = MongoClient('localhost', 27017)
+if development:
+    client = MongoClient('localhost', 27017)
+else:
+    client = MongoClient(mongo_dsn, 27017)
+
+
 db = client['question-poll']
 
 
